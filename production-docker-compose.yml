@@ -1,0 +1,43 @@
+version: '3'
+services:
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - APP_DEBUG=true
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+        ports:
+            - 8080:80
+        depends_on:
+            - mysql
+        networks:
+            - vcs-app
+
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        restart: always
+        ports:
+            - 3306:3306
+        expose:
+            - 3306
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_HOST: '%'
+        volumes:
+            - mysql:/var/lib/mysql
+        networks:
+            - vcs-app
+
+networks:
+    vcs-app:
+        driver: bridge
+
+volumes:
+    mysql:
+        driver: local
