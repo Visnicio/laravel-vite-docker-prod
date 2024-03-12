@@ -14,7 +14,7 @@ services:
         depends_on:
             - mysql
         networks:
-            - vcs-app
+            - app
 
     mysql:
         image: 'mysql/mysql-server:8.0'
@@ -32,10 +32,10 @@ services:
         volumes:
             - mysql:/var/lib/mysql
         networks:
-            - vcs-app
+            - app
 
 networks:
-    vcs-app:
+    app:
         driver: bridge
 
 volumes:
